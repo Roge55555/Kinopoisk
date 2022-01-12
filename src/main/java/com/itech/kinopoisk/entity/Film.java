@@ -6,6 +6,8 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @AllArgsConstructor
@@ -22,11 +24,9 @@ public class Film {
     private Long id;
 
     @Column(name = "name_ru", unique = true)
-    @NotBlank
     private String name_ru;
 
     @Column(name = "name_en", unique = true)
-    @NotBlank
     private String name_en;
 
     @Column(name = "year")
@@ -39,10 +39,12 @@ public class Film {
 
     @Column(name = "rating")
     @NotNull
+    @PositiveOrZero
     private Double rating;
 
     @Column(name = "rating_vote_count")
     @NotNull
+    @Positive
     private Long ratingVoteCount;
 
     @Column(name = "poster_url")
@@ -54,13 +56,13 @@ public class Film {
     private String poster_url_preview;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "films", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "film", cascade = CascadeType.REMOVE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<CountryOfFilm> countryOfFilmList;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "films", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "film", cascade = CascadeType.REMOVE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<GenreOfFilm> genreOfFilmList;

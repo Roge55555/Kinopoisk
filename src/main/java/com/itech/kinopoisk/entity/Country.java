@@ -1,6 +1,7 @@
 package com.itech.kinopoisk.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,10 +23,11 @@ public class Country {
 
     @Column(name = "name", unique = true)
     @NotBlank
+    @JsonProperty("country")
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "countries", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "country", cascade = CascadeType.REMOVE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<CountryOfFilm> countryOfFilmList;
