@@ -15,4 +15,7 @@ public class FilmUpdateDTO extends FilmAddDTO{
 
     @Positive
     private Long filmId;
+
+    //TODO disappear/arise in json
+    private Boolean ratingChange;
 }
