@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+							http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="01" author="rogE">
+
+        <createTable tableName="films">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="name_ru" type="varchar(255)">
+                <constraints nullable="true" unique="true"/>
+            </column>
+            <column name="name_en" type="varchar(255)">
+                <constraints nullable="true" unique="true"/>
+            </column>
+            <column name="year" type="varchar(255)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="length" type="varchar(255)">
+                <constraints nullable="true" unique="false"/>
+            </column>
+            <column name="rating" type="double">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="rating_vote_count" type="bigint">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="poster_url" type="varchar(255)">
+                <constraints nullable="true" unique="true"/>
+            </column>
+            <column name="poster_url_preview" type="varchar(255)">
+                <constraints nullable="true" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="countries">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="film_countries">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="film_id" type="bigint">
+            <constraints nullable="false" foreignKeyName="fk_film_countries_films" references="films(id)"/>
+            </column>
+            <column name="country_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_film_countries_countries" references="countries(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="genres">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="film_genres">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="film_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_film_genres_films" references="films(id)"/>
+            </column>
+            <column name="genre_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_film_genres_genres" references="genres(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
