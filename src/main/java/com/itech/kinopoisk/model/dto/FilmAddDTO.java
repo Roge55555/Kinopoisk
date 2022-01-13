@@ -2,10 +2,7 @@ package com.itech.kinopoisk.model.dto;
 
 import com.itech.kinopoisk.entity.Country;
 import com.itech.kinopoisk.entity.Genre;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class FilmAddDTO {
 
     private String nameRu;

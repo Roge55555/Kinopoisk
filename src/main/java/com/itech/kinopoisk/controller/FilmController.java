@@ -3,12 +3,14 @@ package com.itech.kinopoisk.controller;
 import com.itech.kinopoisk.entity.Film;
 import com.itech.kinopoisk.model.dto.FilmAddDTO;
 import com.itech.kinopoisk.model.dto.FilmUpdateDTO;
+import com.itech.kinopoisk.model.filter.FilmFilterRequest;
 import com.itech.kinopoisk.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,6 +42,11 @@ public class FilmController {
         genreOfFilmService.add(film.getId(), filmAddDTO.getGenres());
 
         return filmService.add(film);
+    }
+
+    @GetMapping("/filter")
+    public List<FilmAddDTO> getFilm(@RequestBody FilmFilterRequest filterRequest) {
+        return filmService.findAll(filterRequest);
     }
 
     @PutMapping

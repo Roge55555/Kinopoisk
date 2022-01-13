@@ -75,6 +75,13 @@
 			<version>2.6.0</version>
 		</dependency>
 
+		<!--Generate metamodel classes ClassName_ -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<version>5.3.7.Final</version>
+		</dependency>
+
 
 	</dependencies>
 
