@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=kinopoiskdb
+      - MYSQL_USER=kpuser
+      - MYSQL_PASSWORD=kpuser
+    ports:
+      - 3307:3306
+
+  app:
+    image: openjdk:11.0.10
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/kinopoiskdb?createDatabaseIfNotExist=true
+    depends_on:
+      - db
+    volumes:
+      - .\target\kinopoisk-0.1.war:/kinopoisk/target/kinopoisk-0.1.war
+    entrypoint: [ "java", "-jar", "/socialnetwork/target/kinopoisk-0.1.war" ]
