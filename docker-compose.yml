@@ -10,6 +10,7 @@ services:
       - MYSQL_PASSWORD=kpuser
     ports:
       - 3307:3306
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
   app:
     image: openjdk:11.0.10
