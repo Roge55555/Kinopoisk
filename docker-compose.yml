@@ -21,4 +21,4 @@ services:
       - db
     volumes:
       - .\target\kinopoisk-0.1.war:/kinopoisk/target/kinopoisk-0.1.war
-    entrypoint: [ "java", "-jar", "/socialnetwork/target/kinopoisk-0.1.war" ]
+    entrypoint: [ "java", "-jar", "/kinopoisk/target/kinopoisk-0.1.war" ]
