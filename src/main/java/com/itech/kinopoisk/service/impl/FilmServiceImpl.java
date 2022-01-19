@@ -1,6 +1,7 @@
 package com.itech.kinopoisk.service.impl;
 
 import com.itech.kinopoisk.entity.*;
+import com.itech.kinopoisk.exceptions.NoSuchElementException;
 import com.itech.kinopoisk.model.dto.FilmAddDTO;
 import com.itech.kinopoisk.model.filter.FilmFilterRequest;
 import com.itech.kinopoisk.repository.FilmRepository;
@@ -77,7 +78,10 @@ public class FilmServiceImpl implements FilmService {
 
     @Override
     public Film findById(Long id) {
-        return filmRepository.findById(id).orElseThrow(/*log + exception*/);
+        return filmRepository.findById(id).orElseThrow(() -> {
+            log.error("No element with such id - {}.", id);
+            throw new NoSuchElementException(id);
+        });
     }
 
     @Override
@@ -112,6 +116,7 @@ public class FilmServiceImpl implements FilmService {
 
     @Override
     public void delete(Long id) {
+        findById(id);
         filmRepository.deleteById(id);
     }
 }

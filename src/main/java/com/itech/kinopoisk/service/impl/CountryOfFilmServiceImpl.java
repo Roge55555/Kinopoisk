@@ -50,8 +50,7 @@ public class CountryOfFilmServiceImpl implements CountryOfFilmService {
     @Override
     public Optional<CountryOfFilm> findByFilmIdAndCountryName(Long filmId, String countryName) {
         if (Objects.isNull(findByFilmIdAndCountryId(filmId, countryService.findByCountryName(countryName).getId()))) {
-            //log
-            //err
+            log.error("No element with such film id - {} and country name - {}.", filmId, countryName);
             throw new NoSuchElementException(filmId + " " + countryService.findByCountryName(countryName).getId());
         }
         return countryOfFilmRepository.findByFilmIdAndCountryName(filmId, countryName);
