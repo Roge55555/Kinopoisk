@@ -25,7 +25,7 @@ public class FilmController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Film addFilm(@Valid @RequestBody FilmAddDTO filmAddDTO) {
+    public void addFilm(@Valid @RequestBody FilmAddDTO filmAddDTO) {
         Film film = Film.builder()
                 .nameRu(filmAddDTO.getNameRu())
                 .nameEn(filmAddDTO.getNameEn())
@@ -40,8 +40,6 @@ public class FilmController {
         film = filmService.add(film);
         countryOfFilmService.add(film.getId(), filmAddDTO.getCountries());
         genreOfFilmService.add(film.getId(), filmAddDTO.getGenres());
-
-        return filmService.add(film);
     }
 
     @GetMapping("/filter")

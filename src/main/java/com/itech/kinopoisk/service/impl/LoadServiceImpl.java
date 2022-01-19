@@ -92,19 +92,5 @@ public class LoadServiceImpl implements LoadService {
             }
             end = page.getPagesCount().intValue();
         } while (pageNumber < end);
-
-
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.set("X-API-KEY", "2c2c61fe-07c5-47d2-9ce0-f3f6ad187b7e");
-//
-//        HttpEntity<String> entity = new HttpEntity<String>(headers);
-//        String result = restTemplate.postForObject("https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_250_BEST_FILMS&page=", entity, String.class);
-//
-//
-////        String result = restTemplate.getForObject("https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_250_BEST_FILMS&page=", String.class);
-////        model.addAttribute("result", result);
-//        System.out.println();
     }
 }
