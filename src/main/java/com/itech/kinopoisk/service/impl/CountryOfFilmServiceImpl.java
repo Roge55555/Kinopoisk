@@ -37,11 +37,6 @@ public class CountryOfFilmServiceImpl implements CountryOfFilmService {
     }
 
     @Override
-    public List<CountryOfFilm> findAllByCountryId(Long id) {
-        return null;
-    }
-
-    @Override
     public List<CountryOfFilm> findByFilmId(Long id) {
         return countryOfFilmRepository.findByFilmId(id);
     }

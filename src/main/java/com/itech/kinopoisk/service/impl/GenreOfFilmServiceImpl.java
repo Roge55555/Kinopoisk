@@ -37,11 +37,6 @@ public class GenreOfFilmServiceImpl implements GenreOfFilmService {
     }
 
     @Override
-    public List<GenreOfFilm> findAllByGenreId(Long id) {
-        return null;
-    }
-
-    @Override
     public List<GenreOfFilm> findByFilmId(Long id) {
         return genreOfFilmRepository.findByFilmId(id);
     }

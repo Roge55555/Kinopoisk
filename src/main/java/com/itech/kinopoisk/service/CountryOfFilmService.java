@@ -10,8 +10,6 @@ public interface CountryOfFilmService {
 
     void add(Long filmId, List<Country> countryList);
 
-    List<CountryOfFilm> findAllByCountryId(Long id);
-
     List<CountryOfFilm> findByFilmId(Long id);
 
     Optional<CountryOfFilm> findByFilmIdAndCountryId(Long filmId, Long countryId);
