@@ -70,8 +70,8 @@ public class LoadServiceImpl implements LoadService {
                 for (FilmUpdateDTO filmFromTop : filmList) {
                      film = Film.builder()
                              .id(filmFromTop.getFilmId())
-                             .name_ru(filmFromTop.getNameRu())
-                             .name_en(filmFromTop.getNameEn())
+                             .nameRu(filmFromTop.getNameRu())
+                             .nameEn(filmFromTop.getNameEn())
                              .year(filmFromTop.getYear())
                              .length(filmFromTop.getFilmLength())
                              .rating(filmFromTop.getRating())

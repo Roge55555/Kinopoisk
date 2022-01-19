@@ -24,10 +24,10 @@ public class Film {
     private Long id;
 
     @Column(name = "name_ru", unique = true)
-    private String name_ru;
+    private String nameRu;
 
     @Column(name = "name_en", unique = true)
-    private String name_en;
+    private String nameEn;
 
     @Column(name = "year")
     @NotBlank

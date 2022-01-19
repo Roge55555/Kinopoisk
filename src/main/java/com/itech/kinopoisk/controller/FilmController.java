@@ -27,8 +27,8 @@ public class FilmController {
     @ResponseStatus(HttpStatus.CREATED)
     public Film addFilm(@Valid @RequestBody FilmAddDTO filmAddDTO) {
         Film film = Film.builder()
-                .name_ru(filmAddDTO.getNameRu())
-                .name_en(filmAddDTO.getNameEn())
+                .nameRu(filmAddDTO.getNameRu())
+                .nameEn(filmAddDTO.getNameEn())
                 .year(filmAddDTO.getYear())
                 .length(filmAddDTO.getFilmLength())
                 .rating(filmAddDTO.getRating())
@@ -54,8 +54,8 @@ public class FilmController {
     public void updateUser(@Valid @RequestBody FilmUpdateDTO filmUpdateDTO) {
         Film film = Film.builder()
                 .id(filmUpdateDTO.getFilmId())
-                .name_ru(filmUpdateDTO.getNameRu())
-                .name_en(filmUpdateDTO.getNameEn())
+                .nameRu(filmUpdateDTO.getNameRu())
+                .nameEn(filmUpdateDTO.getNameEn())
                 .year(filmUpdateDTO.getYear())
                 .length(filmUpdateDTO.getFilmLength())
                 .rating(filmUpdateDTO.getRating())

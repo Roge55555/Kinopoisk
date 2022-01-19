@@ -54,8 +54,8 @@ public class FilmServiceImpl implements FilmService {
             }
 
             filmAddDTOList.add(FilmAddDTO.builder()
-                    .nameRu(film.getName_ru())
-                    .nameEn(film.getName_en())
+                    .nameRu(film.getNameRu())
+                    .nameEn(film.getNameEn())
                     .year(film.getYear())
                     .filmLength(film.getLength())
                     .countries(countryList)
@@ -83,11 +83,11 @@ public class FilmServiceImpl implements FilmService {
     @Override
     public Film update(Film film) {
         Film updatedFilm = findById(film.getId());
-        if (Objects.nonNull(film.getName_ru())) {
-            updatedFilm.setName_ru(film.getName_ru());
+        if (Objects.nonNull(film.getNameRu())) {
+            updatedFilm.setNameRu(film.getNameRu());
         }
-        if (Objects.nonNull(film.getName_en())) {
-            updatedFilm.setName_en(film.getName_en());
+        if (Objects.nonNull(film.getNameEn())) {
+            updatedFilm.setNameEn(film.getNameEn());
         }
         if (Objects.nonNull(film.getYear())) {
             updatedFilm.setYear(film.getYear());
