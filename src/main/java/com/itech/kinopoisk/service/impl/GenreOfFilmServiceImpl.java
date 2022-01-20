@@ -49,9 +49,9 @@ public class GenreOfFilmServiceImpl implements GenreOfFilmService {
 
     @Override
     public Optional<GenreOfFilm> findByFilmIdAndGenreName(Long filmId, String genreName) {
-        if (Objects.isNull(findByFilmIdAndGenreId(filmId, genreService.findByGenreName(genreName).getId()))) {
+        if (findByFilmIdAndGenreId(filmId, genreService.findByGenreName(genreName).getId()).isEmpty()) {
             log.error("No element with such film id - {} and genre name - {}.", filmId, genreName);
-            throw new NoSuchElementException(filmId + " " + genreService.findByGenreName(genreName).getId());
+            throw new NoSuchElementException(filmId + " " + genreName);
         }
         return genreOfFilmRepository.findByFilmIdAndGenreName(filmId, genreName);
     }
