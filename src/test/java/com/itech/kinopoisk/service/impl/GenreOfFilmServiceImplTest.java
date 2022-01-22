@@ -7,18 +7,19 @@ import com.itech.kinopoisk.exceptions.NoSuchElementException;
 import com.itech.kinopoisk.repository.GenreOfFilmRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class GenreOfFilmServiceImplTest {
@@ -36,15 +37,12 @@ class GenreOfFilmServiceImplTest {
     @DisplayName("Add genres of film")
     void add() {
         Genre genre = Genre.builder().id(6L).name("ужасы").build();
-        List<Genre> genreList = new ArrayList<>();
-        genreList.add(Genre.builder().name("биография").build());
-        genreList.add(Genre.builder().name("вестерн").build());
-        genreList.add(Genre.builder().name("история").build());
+        List<Genre> genreList = Collections.singletonList(Genre.builder().name("биография").build());
 
-        Mockito.when(genreService.findByGenreName(ArgumentMatchers.anyString())).thenReturn(genre);
+        when(genreService.findByGenreName(anyString())).thenReturn(genre);
         genreOfFilmService.add(10L, genreList);
 
-        Mockito.verify(genreOfFilmRepository, Mockito.times(3)).save(ArgumentMatchers.any(GenreOfFilm.class));
+        verify(genreOfFilmRepository, times(1)).save(any(GenreOfFilm.class));
     }
 
     @Test
@@ -58,7 +56,7 @@ class GenreOfFilmServiceImplTest {
         List<GenreOfFilm> list = new ArrayList<>();
         list.add(genreOfFilm);
 
-        Mockito.when(genreOfFilmRepository.findByFilmId(ArgumentMatchers.anyLong())).thenReturn(list);
+        when(genreOfFilmRepository.findByFilmId(anyLong())).thenReturn(list);
         List<GenreOfFilm> genreOfFilmList = genreOfFilmService.findByFilmId(34L);
 
         assertAll(() -> assertEquals(1, genreOfFilmList.size()),
@@ -70,24 +68,24 @@ class GenreOfFilmServiceImplTest {
     void findByFilmIdAndGenreId() {
         genreOfFilmService.findByFilmIdAndGenreId(34L, 89L);
 
-        Mockito.verify(genreOfFilmRepository, Mockito.times(1)).findByFilmIdAndGenreId(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong());
+        verify(genreOfFilmRepository, times(1)).findByFilmIdAndGenreId(anyLong(), anyLong());
     }
 
     @Test
     @DisplayName("Successful finding genre of film element by film id and genre id")
     void findByFilmIdAndGenreName() {
 
-        Mockito.when(genreService.findByGenreName(ArgumentMatchers.anyString())).thenReturn(Genre.builder().id(90L).build());
-        Mockito.when(genreOfFilmService.findByFilmIdAndGenreId(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong())).thenReturn(java.util.Optional.of(new GenreOfFilm()));
+        when(genreService.findByGenreName(anyString())).thenReturn(Genre.builder().id(90L).build());
+        when(genreOfFilmService.findByFilmIdAndGenreId(anyLong(), anyLong())).thenReturn(java.util.Optional.of(new GenreOfFilm()));
         genreOfFilmService.findByFilmIdAndGenreName(64L, "ужасы");
 
-        Mockito.verify(genreOfFilmRepository, Mockito.times(1)).findByFilmIdAndGenreName(ArgumentMatchers.anyLong(), ArgumentMatchers.anyString());
+        verify(genreOfFilmRepository, times(1)).findByFilmIdAndGenreName(anyLong(), anyString());
     }
 
     @Test
     @DisplayName("Exception when trying finding genre of film element by film id and genre id")
     void findByFilmIdAndGenreNameException() {
-        Mockito.when(genreService.findByGenreName(ArgumentMatchers.anyString())).thenReturn(Genre.builder().id(90L).build());
+        when(genreService.findByGenreName(anyString())).thenReturn(Genre.builder().id(90L).build());
 
         assertThatThrownBy(() -> genreOfFilmService.findByFilmIdAndGenreName(64L, "ужасы"))
                 .isInstanceOf(NoSuchElementException.class);
@@ -97,8 +95,7 @@ class GenreOfFilmServiceImplTest {
     @DisplayName("Updating genres of film")
     void update() {
         Genre genre = Genre.builder().id(6L).name("ужасы").build();
-        List<Genre> genreList = new ArrayList<>();
-        genreList.add(Genre.builder().name("история").build());
+        List<Genre> genreList = Collections.singletonList(Genre.builder().name("история").build());
         GenreOfFilm genreOfFilmName = GenreOfFilm.builder().genre(Genre.builder().id(666L).name("музыка").build()).build();
         GenreOfFilm genreOfFilmId = GenreOfFilm.builder().genre(Genre.builder().id(666666L).name("драма").build()).build();
         List<GenreOfFilm> list = new ArrayList<>();
@@ -106,13 +103,13 @@ class GenreOfFilmServiceImplTest {
         list.add(genreOfFilmId);
 
 
-        Mockito.when(genreOfFilmService.findByFilmId(ArgumentMatchers.anyLong())).thenReturn(list);
-        Mockito.when(genreOfFilmService.findByFilmIdAndGenreName(ArgumentMatchers.anyLong(), ArgumentMatchers.anyString())).thenReturn(java.util.Optional.ofNullable(genreOfFilmName));
-        Mockito.when(genreService.findByGenreName(ArgumentMatchers.anyString())).thenReturn(genre);
-        Mockito.when(genreOfFilmService.findByFilmIdAndGenreId(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong())).thenReturn(java.util.Optional.ofNullable(genreOfFilmId));
+        when(genreOfFilmService.findByFilmId(anyLong())).thenReturn(list);
+        when(genreOfFilmService.findByFilmIdAndGenreName(anyLong(), anyString())).thenReturn(java.util.Optional.ofNullable(genreOfFilmName));
+        when(genreService.findByGenreName(anyString())).thenReturn(genre);
+        when(genreOfFilmService.findByFilmIdAndGenreId(anyLong(), anyLong())).thenReturn(java.util.Optional.ofNullable(genreOfFilmId));
         genreOfFilmService.update(10L, genreList);
 
-        Mockito.verify(genreOfFilmRepository, Mockito.times(1)).save(ArgumentMatchers.any(GenreOfFilm.class));
+        verify(genreOfFilmRepository, times(1)).save(any(GenreOfFilm.class));
     }
 
     @Test
@@ -120,7 +117,7 @@ class GenreOfFilmServiceImplTest {
     void deleteById() {
         genreOfFilmService.deleteById(34L);
 
-        Mockito.verify(genreOfFilmRepository, Mockito.times(1)).deleteById(ArgumentMatchers.anyLong());
+        verify(genreOfFilmRepository, times(1)).deleteById(anyLong());
     }
 
     @Test
@@ -128,6 +125,6 @@ class GenreOfFilmServiceImplTest {
     void deleteByFilmId() {
         genreOfFilmService.deleteByFilmId(99L);
 
-        Mockito.verify(genreOfFilmRepository, Mockito.times(1)).deleteByFilmId(ArgumentMatchers.anyLong());
+        verify(genreOfFilmRepository, times(1)).deleteByFilmId(anyLong());
     }
 }

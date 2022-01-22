@@ -9,20 +9,22 @@ import com.itech.kinopoisk.model.filter.FilmFilterRequest;
 import com.itech.kinopoisk.repository.FilmRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class FilmServiceImplTest {
@@ -61,14 +63,13 @@ class FilmServiceImplTest {
 
         filmService.add(film);
 
-        Mockito.verify(filmRepository, Mockito.times(1)).save(ArgumentMatchers.any(Film.class));
+        verify(filmRepository, times(1)).save(any(Film.class));
     }
 
     @Test
     @DisplayName("Showing all films with selected filter")
     void findAll() {
-        List<Film> film = new ArrayList<>();
-        film.add(newFilm(1L, "1+1", null));
+        List<Film> film = Collections.singletonList(newFilm(1L, "1+1", null));
         List<CountryOfFilm> countryOfFilmList = new ArrayList<>();
         countryOfFilmList.add(new CountryOfFilm());
         countryOfFilmList.add(new CountryOfFilm());
@@ -77,9 +78,9 @@ class FilmServiceImplTest {
         genreOfFilmList.add(new GenreOfFilm());
         genreOfFilmList.add(new GenreOfFilm());
 
-        Mockito.when(filmRepository.findAll((Specification<Film>) ArgumentMatchers.any())).thenReturn(film);
-        Mockito.when(countryOfFilmService.findByFilmId(film.get(0).getId())).thenReturn(countryOfFilmList);
-        Mockito.when(genreOfFilmService.findByFilmId(film.get(0).getId())).thenReturn(genreOfFilmList);
+        when(filmRepository.findAll((Specification<Film>) any())).thenReturn(film);
+        when(countryOfFilmService.findByFilmId(film.get(0).getId())).thenReturn(countryOfFilmList);
+        when(genreOfFilmService.findByFilmId(film.get(0).getId())).thenReturn(genreOfFilmList);
         List<FilmAddDTO> filmAddDTO = filmService.findAll(new FilmFilterRequest());
 
         assertAll(() -> assertEquals(1, filmAddDTO.size()),
@@ -95,7 +96,7 @@ class FilmServiceImplTest {
     void findById() {
         Film film = Film.builder().id(6L).build();
 
-        Mockito.when(filmRepository.findById(ArgumentMatchers.anyLong())).thenReturn(java.util.Optional.of(film));
+        when(filmRepository.findById(anyLong())).thenReturn(java.util.Optional.of(film));
 
         assertEquals(film, filmService.findById(6L));
     }
@@ -103,7 +104,7 @@ class FilmServiceImplTest {
     @Test
     @DisplayName("Exception when we trying to find not existing community message by id")
     void findByIdException() {
-        Mockito.when(filmRepository.findById(ArgumentMatchers.anyLong())).thenReturn(java.util.Optional.empty());
+        when(filmRepository.findById(anyLong())).thenReturn(java.util.Optional.empty());
 
         assertThatThrownBy(() -> filmService.findById(6L))
                 .isInstanceOf(NoSuchElementException.class);
@@ -114,13 +115,13 @@ class FilmServiceImplTest {
     void update() {
         Film oldFilm = newFilm(4L, "Интерстеллар", null);
 
-        Mockito.when(filmRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.ofNullable(oldFilm));
+        when(filmRepository.findById(anyLong())).thenReturn(Optional.ofNullable(oldFilm));
         oldFilm.setNameEn("Interstellar");
-        Mockito.when(filmRepository.save(ArgumentMatchers.any(Film.class))).thenReturn(oldFilm);
+        when(filmRepository.save(any(Film.class))).thenReturn(oldFilm);
         Film updatedFilm = filmService.update(newFilm(4L, null, "Interstellar"));
 
 
-        Mockito.verify(filmRepository, Mockito.times(1)).save(ArgumentMatchers.any(Film.class));
+        verify(filmRepository, times(1)).save(any(Film.class));
         assertEquals(oldFilm, updatedFilm);
     }
 
@@ -128,9 +129,9 @@ class FilmServiceImplTest {
     @DisplayName("Delete film by id")
     void delete() {
 
-        Mockito.when(filmRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.ofNullable(newFilm(2L, "xxx", "xxx")));
+        when(filmRepository.findById(anyLong())).thenReturn(Optional.ofNullable(newFilm(2L, "xxx", "xxx")));
         filmService.delete(641564L);
 
-        Mockito.verify(filmRepository, Mockito.times(1)).deleteById(ArgumentMatchers.anyLong());
+        verify(filmRepository, times(1)).deleteById(anyLong());
     }
 }

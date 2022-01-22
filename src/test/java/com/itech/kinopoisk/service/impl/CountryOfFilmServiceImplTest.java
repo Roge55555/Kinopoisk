@@ -7,18 +7,19 @@ import com.itech.kinopoisk.exceptions.NoSuchElementException;
 import com.itech.kinopoisk.repository.CountryOfFilmRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class CountryOfFilmServiceImplTest {
@@ -36,15 +37,12 @@ class CountryOfFilmServiceImplTest {
     @DisplayName("Add countries of film")
     void add() {
         Country country = Country.builder().id(6L).name("Германия (ФРГ)").build();
-        List<Country> countryList = new ArrayList<>();
-        countryList.add(Country.builder().name("Гонконг").build());
-        countryList.add(Country.builder().name("Иордания").build());
-        countryList.add(Country.builder().name("Кипр").build());
+        List<Country> countryList = Collections.singletonList(Country.builder().name("Кипр").build());
 
-        Mockito.when(countryService.findByCountryName(ArgumentMatchers.anyString())).thenReturn(country);
+        when(countryService.findByCountryName(anyString())).thenReturn(country);
         countryOfFilmService.add(10L, countryList);
 
-        Mockito.verify(countryOfFilmRepository, Mockito.times(3)).save(ArgumentMatchers.any(CountryOfFilm.class));
+        verify(countryOfFilmRepository, times(1)).save(any(CountryOfFilm.class));
     }
 
     @Test
@@ -58,7 +56,7 @@ class CountryOfFilmServiceImplTest {
         List<CountryOfFilm> list = new ArrayList<>();
         list.add(countryOfFilm);
 
-        Mockito.when(countryOfFilmRepository.findByFilmId(ArgumentMatchers.anyLong())).thenReturn(list);
+        when(countryOfFilmRepository.findByFilmId(anyLong())).thenReturn(list);
         List<CountryOfFilm> countryOfFilmList = countryOfFilmService.findByFilmId(34L);
 
         assertAll(() -> assertEquals(1, countryOfFilmList.size()),
@@ -70,24 +68,24 @@ class CountryOfFilmServiceImplTest {
     void findByFilmIdAndCountryId() {
         countryOfFilmService.findByFilmIdAndCountryId(34L, 89L);
 
-        Mockito.verify(countryOfFilmRepository, Mockito.times(1)).findByFilmIdAndCountryId(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong());
+        verify(countryOfFilmRepository, times(1)).findByFilmIdAndCountryId(anyLong(), anyLong());
     }
 
     @Test
     @DisplayName("Successful finding country of film element by film id and country id")
     void findByFilmIdAndCountryName() {
 
-        Mockito.when(countryService.findByCountryName(ArgumentMatchers.anyString())).thenReturn(Country.builder().id(90L).build());
-        Mockito.when(countryOfFilmService.findByFilmIdAndCountryId(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong())).thenReturn(java.util.Optional.of(new CountryOfFilm()));
+        when(countryService.findByCountryName(anyString())).thenReturn(Country.builder().id(90L).build());
+        when(countryOfFilmService.findByFilmIdAndCountryId(anyLong(), anyLong())).thenReturn(java.util.Optional.of(new CountryOfFilm()));
         countryOfFilmService.findByFilmIdAndCountryName(64L, "ужасы");
 
-        Mockito.verify(countryOfFilmRepository, Mockito.times(1)).findByFilmIdAndCountryName(ArgumentMatchers.anyLong(), ArgumentMatchers.anyString());
+        verify(countryOfFilmRepository, times(1)).findByFilmIdAndCountryName(anyLong(), anyString());
     }
 
     @Test
     @DisplayName("Exception when trying finding country of film element by film id and country id")
     void findByFilmIdAndCountryNameException() {
-        Mockito.when(countryService.findByCountryName(ArgumentMatchers.anyString())).thenReturn(Country.builder().id(90L).build());
+        when(countryService.findByCountryName(anyString())).thenReturn(Country.builder().id(90L).build());
 
         assertThatThrownBy(() -> countryOfFilmService.findByFilmIdAndCountryName(64L, "ужасы"))
                 .isInstanceOf(NoSuchElementException.class);
@@ -97,8 +95,7 @@ class CountryOfFilmServiceImplTest {
     @DisplayName("Updating countries of film")
     void update() {
         Country country = Country.builder().id(6L).name("Мальта").build();
-        List<Country> countryList = new ArrayList<>();
-        countryList.add(Country.builder().name("Катар").build());
+        List<Country> countryList = Collections.singletonList(Country.builder().name("Катар").build());
         CountryOfFilm countryOfFilmName = CountryOfFilm.builder().country(Country.builder().id(666L).name("Мексика").build()).build();
         CountryOfFilm countryOfFilmId = CountryOfFilm.builder().country(Country.builder().id(666666L).name("Новая Зеландия").build()).build();
         List<CountryOfFilm> list = new ArrayList<>();
@@ -106,13 +103,13 @@ class CountryOfFilmServiceImplTest {
         list.add(countryOfFilmId);
 
 
-        Mockito.when(countryOfFilmService.findByFilmId(ArgumentMatchers.anyLong())).thenReturn(list);
-        Mockito.when(countryOfFilmService.findByFilmIdAndCountryName(ArgumentMatchers.anyLong(), ArgumentMatchers.anyString())).thenReturn(java.util.Optional.ofNullable(countryOfFilmName));
-        Mockito.when(countryService.findByCountryName(ArgumentMatchers.anyString())).thenReturn(country);
-        Mockito.when(countryOfFilmService.findByFilmIdAndCountryId(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong())).thenReturn(java.util.Optional.ofNullable(countryOfFilmId));
+        when(countryOfFilmService.findByFilmId(anyLong())).thenReturn(list);
+        when(countryOfFilmService.findByFilmIdAndCountryName(anyLong(), anyString())).thenReturn(java.util.Optional.ofNullable(countryOfFilmName));
+        when(countryService.findByCountryName(anyString())).thenReturn(country);
+        when(countryOfFilmService.findByFilmIdAndCountryId(anyLong(), anyLong())).thenReturn(java.util.Optional.ofNullable(countryOfFilmId));
         countryOfFilmService.update(10L, countryList);
 
-        Mockito.verify(countryOfFilmRepository, Mockito.times(1)).save(ArgumentMatchers.any(CountryOfFilm.class));
+        verify(countryOfFilmRepository, times(1)).save(any(CountryOfFilm.class));
     }
 
     @Test
@@ -120,7 +117,7 @@ class CountryOfFilmServiceImplTest {
     void deleteById() {
         countryOfFilmService.deleteById(34L);
 
-        Mockito.verify(countryOfFilmRepository, Mockito.times(1)).deleteById(ArgumentMatchers.anyLong());
+        verify(countryOfFilmRepository, times(1)).deleteById(anyLong());
     }
 
     @Test
@@ -128,6 +125,6 @@ class CountryOfFilmServiceImplTest {
     void deleteByFilmId() {
         countryOfFilmService.deleteByFilmId(99L);
 
-        Mockito.verify(countryOfFilmRepository, Mockito.times(1)).deleteByFilmId(ArgumentMatchers.anyLong());
+        verify(countryOfFilmRepository, times(1)).deleteByFilmId(anyLong());
     }
 }
