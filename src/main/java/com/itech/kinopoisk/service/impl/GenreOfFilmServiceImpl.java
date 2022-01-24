@@ -37,11 +37,6 @@ public class GenreOfFilmServiceImpl implements GenreOfFilmService {
     }
 
     @Override
-    public List<GenreOfFilm> findAllByGenreId(Long id) {
-        return null;
-    }
-
-    @Override
     public List<GenreOfFilm> findByFilmId(Long id) {
         return genreOfFilmRepository.findByFilmId(id);
     }
@@ -54,10 +49,9 @@ public class GenreOfFilmServiceImpl implements GenreOfFilmService {
 
     @Override
     public Optional<GenreOfFilm> findByFilmIdAndGenreName(Long filmId, String genreName) {
-        if (Objects.isNull(findByFilmIdAndGenreId(filmId, genreService.findByGenreName(genreName).getId()))) {
-            //log
-            //err
-            throw new NoSuchElementException(filmId + " " + genreService.findByGenreName(genreName).getId());
+        if (findByFilmIdAndGenreId(filmId, genreService.findByGenreName(genreName).getId()).isEmpty()) {
+            log.error("No element with such film id - {} and genre name - {}.", filmId, genreName);
+            throw new NoSuchElementException(filmId + " " + genreName);
         }
         return genreOfFilmRepository.findByFilmIdAndGenreName(filmId, genreName);
     }

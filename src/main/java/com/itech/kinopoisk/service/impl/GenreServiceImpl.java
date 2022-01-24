@@ -18,7 +18,8 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public Genre findByGenreName(String genreName) {
         return genreRepository.findByName(genreName).orElseThrow(() -> {
+            log.error("No element with such name - {}.", genreName);
             throw new NoSuchElementException(genreName);
-        }/*log + exception*/);
+        });
     }
 }

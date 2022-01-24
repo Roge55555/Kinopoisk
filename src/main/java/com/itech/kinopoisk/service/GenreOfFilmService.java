@@ -10,8 +10,6 @@ public interface GenreOfFilmService {
 
     void add(Long filmId, List<Genre> genreList);
 
-    List<GenreOfFilm> findAllByGenreId(Long id);
-
     List<GenreOfFilm> findByFilmId(Long id);
 
     Optional<GenreOfFilm> findByFilmIdAndGenreId(Long filmId, Long genreId);

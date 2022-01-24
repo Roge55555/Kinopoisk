@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -37,11 +36,6 @@ public class CountryOfFilmServiceImpl implements CountryOfFilmService {
     }
 
     @Override
-    public List<CountryOfFilm> findAllByCountryId(Long id) {
-        return null;
-    }
-
-    @Override
     public List<CountryOfFilm> findByFilmId(Long id) {
         return countryOfFilmRepository.findByFilmId(id);
     }
@@ -54,10 +48,9 @@ public class CountryOfFilmServiceImpl implements CountryOfFilmService {
 
     @Override
     public Optional<CountryOfFilm> findByFilmIdAndCountryName(Long filmId, String countryName) {
-        if (Objects.isNull(findByFilmIdAndCountryId(filmId, countryService.findByCountryName(countryName).getId()))) {
-            //log
-            //err
-            throw new NoSuchElementException(filmId + " " + countryService.findByCountryName(countryName).getId());
+        if (findByFilmIdAndCountryId(filmId, countryService.findByCountryName(countryName).getId()).isEmpty()) {
+            log.error("No element with such film id - {} and country name - {}.", filmId, countryName);
+            throw new NoSuchElementException(filmId + " " + countryName);
         }
         return countryOfFilmRepository.findByFilmIdAndCountryName(filmId, countryName);
     }

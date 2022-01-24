@@ -1,11 +1,14 @@
 package com.itech.kinopoisk.service.impl;
 
 import com.itech.kinopoisk.entity.*;
+import com.itech.kinopoisk.exceptions.NoSuchElementException;
 import com.itech.kinopoisk.model.dto.FilmAddDTO;
 import com.itech.kinopoisk.model.filter.FilmFilterRequest;
 import com.itech.kinopoisk.repository.FilmRepository;
 import com.itech.kinopoisk.repository.specification.FilmSpecification;
-import com.itech.kinopoisk.service.*;
+import com.itech.kinopoisk.service.CountryOfFilmService;
+import com.itech.kinopoisk.service.FilmService;
+import com.itech.kinopoisk.service.GenreOfFilmService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -54,8 +57,8 @@ public class FilmServiceImpl implements FilmService {
             }
 
             filmAddDTOList.add(FilmAddDTO.builder()
-                    .nameRu(film.getName_ru())
-                    .nameEn(film.getName_en())
+                    .nameRu(film.getNameRu())
+                    .nameEn(film.getNameEn())
                     .year(film.getYear())
                     .filmLength(film.getLength())
                     .countries(countryList)
@@ -77,17 +80,20 @@ public class FilmServiceImpl implements FilmService {
 
     @Override
     public Film findById(Long id) {
-        return filmRepository.findById(id).orElseThrow(/*log + exception*/);
+        return filmRepository.findById(id).orElseThrow(() -> {
+            log.error("No element with such id - {}.", id);
+            throw new NoSuchElementException(id);
+        });
     }
 
     @Override
     public Film update(Film film) {
         Film updatedFilm = findById(film.getId());
-        if (Objects.nonNull(film.getName_ru())) {
-            updatedFilm.setName_ru(film.getName_ru());
+        if (Objects.nonNull(film.getNameRu())) {
+            updatedFilm.setNameRu(film.getNameRu());
         }
-        if (Objects.nonNull(film.getName_en())) {
-            updatedFilm.setName_en(film.getName_en());
+        if (Objects.nonNull(film.getNameEn())) {
+            updatedFilm.setNameEn(film.getNameEn());
         }
         if (Objects.nonNull(film.getYear())) {
             updatedFilm.setYear(film.getYear());
@@ -112,6 +118,7 @@ public class FilmServiceImpl implements FilmService {
 
     @Override
     public void delete(Long id) {
+        findById(id);
         filmRepository.deleteById(id);
     }
 }

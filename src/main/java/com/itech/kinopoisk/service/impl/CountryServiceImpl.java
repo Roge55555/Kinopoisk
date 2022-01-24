@@ -18,7 +18,8 @@ public class CountryServiceImpl implements CountryService {
     @Override
     public Country findByCountryName(String countryName) {
         return countryRepository.findByName(countryName).orElseThrow(() -> {
+            log.error("No element with such name - {}.", countryName);
             throw new NoSuchElementException(countryName);
-        }/*log + exception*/);
+        });
     }
 }
