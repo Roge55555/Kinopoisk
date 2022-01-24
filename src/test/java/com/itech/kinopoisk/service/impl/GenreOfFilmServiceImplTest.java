@@ -53,8 +53,7 @@ class GenreOfFilmServiceImplTest {
                 .film(new Film())
                 .genre(new Genre())
                 .build();
-        List<GenreOfFilm> list = new ArrayList<>();
-        list.add(genreOfFilm);
+        List<GenreOfFilm> list = Collections.singletonList(genreOfFilm);
 
         when(genreOfFilmRepository.findByFilmId(anyLong())).thenReturn(list);
         List<GenreOfFilm> genreOfFilmList = genreOfFilmService.findByFilmId(34L);
