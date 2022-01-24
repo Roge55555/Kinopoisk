@@ -53,8 +53,7 @@ class CountryOfFilmServiceImplTest {
                 .film(new Film())
                 .country(new Country())
                 .build();
-        List<CountryOfFilm> list = new ArrayList<>();
-        list.add(countryOfFilm);
+        List<CountryOfFilm> list = Collections.singletonList(countryOfFilm);
 
         when(countryOfFilmRepository.findByFilmId(anyLong())).thenReturn(list);
         List<CountryOfFilm> countryOfFilmList = countryOfFilmService.findByFilmId(34L);
