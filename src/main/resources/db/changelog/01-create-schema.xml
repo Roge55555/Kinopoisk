@@ -78,6 +78,30 @@
                 <constraints nullable="false" foreignKeyName="fk_film_genres_genres" references="genres(id)"/>
             </column>
         </createTable>
+
+        <createTable tableName="access_role">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="role_name" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="user">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="login" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_role_user_ar" references="access_role(id)"/>
+            </column>
+        </createTable>
     </changeSet>
 
 </databaseChangeLog>

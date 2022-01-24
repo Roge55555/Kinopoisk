@@ -12,8 +12,16 @@ public class GlobalExceptionHandler {
     @Value(value = "${data.exception.noSuchLoginMessage:No such element }")
     private String noSuchLoginMessage;
 
+    @Value(value = "${data.exception.JWTInvalidTokenMessage:Your authentication is invalid.}")
+    private String JWTInvalidTokenMessage;
+
     @ExceptionHandler(value = NoSuchElementException.class)
     public ResponseEntity<String> NoSuchElement(NoSuchElementException noSuchElementException) {
         return new ResponseEntity<>(noSuchLoginMessage + noSuchElementException.getString(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = JwtAuthenticationException.class)
+    public ResponseEntity<String> JWTInvalidToken(JwtAuthenticationException jwtAuthenticationException) {
+        return new ResponseEntity<>(JWTInvalidTokenMessage, HttpStatus.GONE);
     }
 }
