@@ -7,7 +7,7 @@
 
     <changeSet id="01" author="rogE">
 
-        <createTable tableName="films">
+        <createTable tableName="film">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
@@ -37,7 +37,7 @@
             </column>
         </createTable>
 
-        <createTable tableName="countries">
+        <createTable tableName="country">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
@@ -46,19 +46,19 @@
             </column>
         </createTable>
 
-        <createTable tableName="film_countries">
+        <createTable tableName="film_country">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
             <column name="film_id" type="bigint">
-            <constraints nullable="false" foreignKeyName="fk_film_countries_films" references="films(id)"/>
+            <constraints nullable="false" foreignKeyName="fk_film_country_film" references="film(id)"/>
             </column>
             <column name="country_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_film_countries_countries" references="countries(id)"/>
+                <constraints nullable="false" foreignKeyName="fk_film_country_country" references="country(id)"/>
             </column>
         </createTable>
 
-        <createTable tableName="genres">
+        <createTable tableName="genre">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
@@ -67,15 +67,15 @@
             </column>
         </createTable>
 
-        <createTable tableName="film_genres">
+        <createTable tableName="film_genre">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
             </column>
             <column name="film_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_film_genres_films" references="films(id)"/>
+                <constraints nullable="false" foreignKeyName="fk_film_genre_film" references="film(id)"/>
             </column>
             <column name="genre_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_film_genres_genres" references="genres(id)"/>
+                <constraints nullable="false" foreignKeyName="fk_film_genre_genre" references="genre(id)"/>
             </column>
         </createTable>
 

@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Data
 @Builder
 @Entity
-@Table(name = "film_genres", uniqueConstraints = @UniqueConstraint(columnNames = {"film_id", "genre_id"}))
+@Table(name = "film_genre", uniqueConstraints = @UniqueConstraint(columnNames = {"film_id", "genre_id"}))
 public class GenreOfFilm {
 
     @Id

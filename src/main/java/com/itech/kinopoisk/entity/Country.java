@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @Builder
 @Entity
-@Table(name = "countries")
+@Table(name = "country")
 public class Country {
 
     @Id

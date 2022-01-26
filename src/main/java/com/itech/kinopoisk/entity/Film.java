@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @Builder
 @Entity
-@Table(name = "films")
+@Table(name = "film")
 public class Film {
 
     @Id
