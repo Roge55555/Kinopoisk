@@ -1,14 +1,13 @@
 package com.itech.kinopoisk.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,4 +35,34 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role")
     private AccessRole role;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<Session> sessionList;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<SessionRating> sessionRatingList;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<SessionMessage> sessionMessageList;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<UserOfSession> userOfSessionList;
+
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "whoBaned", cascade = CascadeType.REMOVE)
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    private List<BlocklistFilm> blocklistFilmList;
 }
