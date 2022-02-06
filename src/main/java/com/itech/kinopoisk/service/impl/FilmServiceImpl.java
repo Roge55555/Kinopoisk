@@ -47,34 +47,38 @@ public class FilmServiceImpl implements FilmService {
 
         for (Film film : filmList) {
 
-            countryOfFilmList = countryOfFilmService.findByFilmId(film.getId());
-            for (CountryOfFilm countryOfFilm : countryOfFilmList) {
-                countryList.add(countryOfFilm.getCountry());
+            if (!film.getIsBlocked()) {
+
+                countryOfFilmList = countryOfFilmService.findByFilmId(film.getId());
+                for (CountryOfFilm countryOfFilm : countryOfFilmList) {
+                    countryList.add(countryOfFilm.getCountry());
+                }
+                genreOfFilmList = genreOfFilmService.findByFilmId(film.getId());
+                for (GenreOfFilm genreOfFilm : genreOfFilmList) {
+                    genreList.add(genreOfFilm.getGenre());
+                }
+
+                filmAddDTOList.add(FilmAddDTO.builder()
+                        .nameRu(film.getNameRu())
+                        .nameEn(film.getNameEn())
+                        .year(film.getYear())
+                        .filmLength(film.getLength())
+                        .countries(countryList)
+                        .genres(genreList)
+                        .rating(film.getRating())
+                        .ratingVoteCount(film.getRatingVoteCount())
+                        .posterUrl(film.getPoster_url())
+                        .posterUrlPreview(film.getPoster_url_preview())
+                        .build());
+
+                countryOfFilmList.clear();
+                genreOfFilmList.clear();
+                countryList = new ArrayList<>();
+                genreList = new ArrayList<>();
+
             }
-            genreOfFilmList = genreOfFilmService.findByFilmId(film.getId());
-            for (GenreOfFilm genreOfFilm : genreOfFilmList) {
-                genreList.add(genreOfFilm.getGenre());
-            }
-
-            filmAddDTOList.add(FilmAddDTO.builder()
-                    .nameRu(film.getNameRu())
-                    .nameEn(film.getNameEn())
-                    .year(film.getYear())
-                    .filmLength(film.getLength())
-                    .countries(countryList)
-                    .genres(genreList)
-                    .rating(film.getRating())
-                    .ratingVoteCount(film.getRatingVoteCount())
-                    .posterUrl(film.getPoster_url())
-                    .posterUrlPreview(film.getPoster_url_preview())
-                    .build());
-
-            countryOfFilmList.clear();
-            genreOfFilmList.clear();
-            countryList = new ArrayList<>();
-            genreList = new ArrayList<>();
-
         }
+
         return filmAddDTOList;
     }
 
