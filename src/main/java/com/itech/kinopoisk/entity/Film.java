@@ -1,6 +1,7 @@
 package com.itech.kinopoisk.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -54,6 +55,10 @@ public class Film {
     @Column(name = "poster_url_preview")
     @NotBlank
     private String poster_url_preview;
+
+    @Column(name = "is_blocked")
+    @JsonIgnore
+    private Boolean isBlocked;
 
     @JsonIgnore
     @OneToMany(mappedBy = "film", cascade = CascadeType.REMOVE)
