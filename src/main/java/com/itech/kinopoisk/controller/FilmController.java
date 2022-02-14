@@ -7,6 +7,7 @@ import com.itech.kinopoisk.model.filter.FilmFilterRequest;
 import com.itech.kinopoisk.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,6 +44,7 @@ public class FilmController {
     }
 
     @GetMapping("/filter")
+    @PreAuthorize("hasAuthority('user:permission')")
     public List<FilmAddDTO> getFilm(@RequestBody FilmFilterRequest filterRequest) {
         return filmService.findAll(filterRequest);
     }

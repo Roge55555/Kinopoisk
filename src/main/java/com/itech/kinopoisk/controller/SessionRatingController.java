@@ -1,12 +1,12 @@
 package com.itech.kinopoisk.controller;
 
-import com.itech.kinopoisk.Utils;
 import com.itech.kinopoisk.entity.Session;
 import com.itech.kinopoisk.entity.SessionRating;
 import com.itech.kinopoisk.model.dto.SessionRatingDTO;
 import com.itech.kinopoisk.service.SessionRatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,6 +22,7 @@ public class SessionRatingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('user:permission')")
     public void addSessionRating(@Valid @RequestBody SessionRatingDTO sessionRatingDTO) {
         SessionRating sessionRating = SessionRating.builder()
                 .session(Session.builder().id(sessionRatingDTO.getSessionId()).build())

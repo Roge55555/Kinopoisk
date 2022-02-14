@@ -6,6 +6,7 @@ import com.itech.kinopoisk.model.dto.SessionMessageDTO;
 import com.itech.kinopoisk.service.SessionMessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ public class SessionMessageController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('user:permission')")
     public void addSessionRating(@Valid @RequestBody SessionMessageDTO sessionMessageDTO) {
         SessionMessage sessionMessage = SessionMessage.builder()
                 .session(Session.builder().id(sessionMessageDTO.getSessionId()).build())
