@@ -23,6 +23,7 @@ public class UserController {
         User user = User.builder()
                 .login(userDTO.getLogin())
                 .password(userDTO.getPassword())
+                .email(userDTO.getEmail())
                 .build();
         return userService.add(user);
     }

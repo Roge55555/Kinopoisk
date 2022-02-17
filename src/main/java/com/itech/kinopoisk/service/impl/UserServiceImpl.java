@@ -7,6 +7,7 @@ import com.itech.kinopoisk.exceptions.TooLowAccessException;
 import com.itech.kinopoisk.model.Role;
 import com.itech.kinopoisk.repository.UserRepository;
 import com.itech.kinopoisk.service.AccessRoleService;
+import com.itech.kinopoisk.service.SendEmailService;
 import com.itech.kinopoisk.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -29,11 +30,15 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final SendEmailService sendEmailService;
+
     @Override
     public User add(User user) {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(accessRoleService.findByName(Role.USER));
+
+        sendEmailService.sendActivationCode(user.getEmail(), "Film2Night", "You are registered in kinopoisk group watching film service.");
 
         return userRepository.save(user);
     }
