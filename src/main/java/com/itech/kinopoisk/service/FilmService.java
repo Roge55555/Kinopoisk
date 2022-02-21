@@ -8,13 +8,10 @@ import java.util.List;
 
 public interface FilmService {
 
-    Film add(Film film);
-
     List<FilmAddDTO> findAll(FilmFilterRequest filterRequest);
 
     Film findById(Long id);
 
-    Film update(Film film);
+    void banFilm(Long id);
 
-    void delete(Long id);
 }

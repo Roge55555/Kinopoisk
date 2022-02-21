@@ -11,11 +11,13 @@ import com.itech.kinopoisk.service.FilmService;
 import com.itech.kinopoisk.service.GenreOfFilmService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -27,11 +29,6 @@ public class FilmServiceImpl implements FilmService {
     private final CountryOfFilmService countryOfFilmService;
 
     private final GenreOfFilmService genreOfFilmService;
-
-    @Override
-    public Film add(Film film) {
-        return filmRepository.save(film);
-    }
 
     @Override
     public List<FilmAddDTO> findAll(FilmFilterRequest filterRequest) {
@@ -91,38 +88,13 @@ public class FilmServiceImpl implements FilmService {
     }
 
     @Override
-    public Film update(Film film) {
-        Film updatedFilm = findById(film.getId());
-        if (Objects.nonNull(film.getNameRu())) {
-            updatedFilm.setNameRu(film.getNameRu());
-        }
-        if (Objects.nonNull(film.getNameEn())) {
-            updatedFilm.setNameEn(film.getNameEn());
-        }
-        if (Objects.nonNull(film.getYear())) {
-            updatedFilm.setYear(film.getYear());
-        }
-        if (Objects.nonNull(film.getLength())) {
-            updatedFilm.setLength(film.getLength());
-        }
-        if (Objects.nonNull(film.getRating())) {
-            updatedFilm.setRating(film.getRating());
-        }
-        if (Objects.nonNull(film.getRatingVoteCount())) {
-            updatedFilm.setRatingVoteCount(film.getRatingVoteCount());
-        }
-        if (Objects.nonNull(film.getPoster_url())) {
-            updatedFilm.setPoster_url(film.getPoster_url());
-        }
-        if (Objects.nonNull(film.getPoster_url_preview())) {
-            updatedFilm.setPoster_url_preview(film.getPoster_url_preview());
-        }
-        return filmRepository.save(updatedFilm);
+    public void banFilm(Long id) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+
+        HttpEntity<String> request = new HttpEntity<>(headers);
+        restTemplate.put("http://localhost:8079/JE_war_exploded/films/" + id, request, String.class);
     }
 
-    @Override
-    public void delete(Long id) {
-        findById(id);
-        filmRepository.deleteById(id);
-    }
 }
