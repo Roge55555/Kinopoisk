@@ -15,16 +15,16 @@ public class LoadController {
     private final LoadService loadService;
 
     @GetMapping("/top250")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('admin:permission')")
-    public void addUser() {
+    public void loadTopFilms() {
         loadService.loadTop250Films();
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('admin:permission')")
-    public FullFilm addUser(@PathVariable("id") Long id) {
+    public FullFilm loadFullFilm(@PathVariable("id") Long id) {
         return loadService.loadFilmInfo(id);
     }
 }
