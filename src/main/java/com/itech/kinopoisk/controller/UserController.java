@@ -30,14 +30,14 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PreAuthorize("hasAuthority('moder:permission') || hasAuthority('admin:permission')")
+    @PreAuthorize("hasAuthority('moderator:permission') || hasAuthority('admin:permission')")
     public void updateUser(@PathVariable("id") Long id, @RequestBody String role) {
         userService.updateRole(id, role);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('user:permission') || hasAuthority('moder:permission') || hasAuthority('admin:permission')")
+    @PreAuthorize("hasAuthority('user:permission') || hasAuthority('moderator:permission') || hasAuthority('admin:permission')")
     public void deleteUser() {
         userService.delete();
     }

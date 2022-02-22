@@ -14,7 +14,7 @@
         </insert>
         <insert tableName="access_role">
             <column name="id" valueNumeric="2"/>
-            <column name="role_name" value="MODER"/>
+            <column name="role_name" value="MODERATOR"/>
         </insert>
         <insert tableName="access_role">
             <column name="id" valueNumeric="3"/>

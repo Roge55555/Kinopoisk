@@ -23,7 +23,7 @@ public class FilmController {
     }
 
     @PutMapping("/ban/{id}")
-    @PreAuthorize("hasAuthority('moder:permission')")
+    @PreAuthorize("hasAuthority('moderator:permission')")
     public void banFilm(@PathVariable Long id) {
         filmService.banFilm(id);
     }
