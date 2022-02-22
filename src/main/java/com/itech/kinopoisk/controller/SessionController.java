@@ -61,7 +61,7 @@ public class SessionController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('user:permission')")
+    @PreAuthorize("hasAuthority('user:permission') || hasAuthority('moderator:permission')")
     public void deleteSession(@PathVariable("id") Long id) {
         sessionService.deleteSession(id);
     }

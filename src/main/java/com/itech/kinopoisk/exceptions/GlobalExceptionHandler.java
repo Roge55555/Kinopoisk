@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -28,5 +30,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = TooLowAccessException.class)
     public ResponseEntity<String> noSuchElement(TooLowAccessException tooLowAccessException) {
         return new ResponseEntity<>(tooLowAccessException.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = TryingModifyNotYourDataException.class)
+    public ResponseEntity<String> tryingModifyNotYourData(TryingModifyNotYourDataException tryingModifyNotYourDataException) {
+        return new ResponseEntity<>(tryingModifyNotYourDataException.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(value = SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<String> dataIntegrityViolationException(SQLIntegrityConstraintViolationException dataIntegrityViolationException) {
+        return new ResponseEntity<>(dataIntegrityViolationException.getMessage(), HttpStatus.CONFLICT);
     }
 }

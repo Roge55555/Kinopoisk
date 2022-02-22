@@ -9,6 +9,8 @@ public interface SessionService {
     //create session
     Session addSession(Session session);
 
+    Session findById(Long id);
+
     //find all sessions
     List<Session> findAllAvailableSession();
 
