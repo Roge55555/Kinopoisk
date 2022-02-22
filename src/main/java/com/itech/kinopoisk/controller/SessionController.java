@@ -38,7 +38,7 @@ public class SessionController {
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('user:permission')")
     public List<Session> getAllAvailableSession() {
         return sessionService.findAllAvailableSession();
