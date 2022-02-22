@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
 public class NoSuchElementException extends RuntimeException {
 
-    private String string;
+    private String message;
 
     private Long id;
 
@@ -18,8 +18,8 @@ public class NoSuchElementException extends RuntimeException {
         this.id = id;
     }
 
-    public NoSuchElementException(String string) {
-        this.string = string;
+    public NoSuchElementException(String message) {
+        this.message = message;
     }
 
 }

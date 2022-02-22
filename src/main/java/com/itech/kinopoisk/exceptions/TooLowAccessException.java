@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
 public class TooLowAccessException extends RuntimeException {
 
-    private String string;
+    private String message;
 
-    public TooLowAccessException(String string) {
-        this.string = string;
+    public TooLowAccessException(String message) {
+        this.message = message;
     }
 
 }

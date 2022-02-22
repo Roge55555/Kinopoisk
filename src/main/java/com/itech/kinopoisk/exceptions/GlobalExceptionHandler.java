@@ -13,20 +13,20 @@ public class GlobalExceptionHandler {
     private String noSuchElementMessage;
 
     @Value(value = "${data.exception.JWTInvalidTokenMessage:Your authentication is invalid.}")
-    private String JWTInvalidTokenMessage;
+    private String jwtInvalidTokenMessage;
 
     @ExceptionHandler(value = NoSuchElementException.class)
-    public ResponseEntity<String> NoSuchElement(NoSuchElementException noSuchElementException) {
-        return new ResponseEntity<>(noSuchElementMessage + noSuchElementException.getString(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> noSuchElement(NoSuchElementException noSuchElementException) {
+        return new ResponseEntity<>(noSuchElementMessage + noSuchElementException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = JwtAuthenticationException.class)
-    public ResponseEntity<String> JWTInvalidToken(JwtAuthenticationException jwtAuthenticationException) {
-        return new ResponseEntity<>(JWTInvalidTokenMessage, HttpStatus.GONE);
+    public ResponseEntity<String> jwtInvalidToken(JwtAuthenticationException jwtAuthenticationException) {
+        return new ResponseEntity<>(jwtInvalidTokenMessage, HttpStatus.GONE);
     }
 
     @ExceptionHandler(value = TooLowAccessException.class)
-    public ResponseEntity<String> NoSuchElement(TooLowAccessException tooLowAccessException) {
-        return new ResponseEntity<>(tooLowAccessException.getString(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> noSuchElement(TooLowAccessException tooLowAccessException) {
+        return new ResponseEntity<>(tooLowAccessException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
