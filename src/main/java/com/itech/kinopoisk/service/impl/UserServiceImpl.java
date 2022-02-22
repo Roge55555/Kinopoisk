@@ -82,7 +82,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete() {
-        userRepository.deleteById(findByLogin(Utils.getLogin()).getId());
+    public void delete(Long id) {
+        if(findByLogin(Utils.getLogin()).getId().equals(id) ||
+                findByLogin(Utils.getLogin()).getRole().getId() < findById(id).getRole().getId()) {
+            userRepository.deleteById(id);
+        }
+        else {
+            log.error("User - {}, trying delete user with id - {}.", Utils.getLogin(), id);
+            throw new TooLowAccessException("You can delete yourself account or account with lower permissions!");
+        }
     }
 }

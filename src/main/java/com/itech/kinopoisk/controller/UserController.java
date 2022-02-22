@@ -35,10 +35,10 @@ public class UserController {
         userService.updateRole(id, role);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('user:permission') || hasAuthority('moderator:permission') || hasAuthority('admin:permission')")
-    public void deleteUser() {
-        userService.delete();
+    public void deleteUser(@PathVariable("id") Long id) {
+        userService.delete(id);
     }
 }
