@@ -50,11 +50,11 @@ public class Film {
 
     @Column(name = "poster_url")
     @NotBlank
-    private String poster_url;
+    private String posterUrl;
 
     @Column(name = "poster_url_preview")
     @NotBlank
-    private String poster_url_preview;
+    private String posterUrlPreview;
 
     @Column(name = "is_blocked")
     @JsonIgnore

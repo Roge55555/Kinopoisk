@@ -64,8 +64,8 @@ public class FilmServiceImpl implements FilmService {
                         .genres(genreList)
                         .rating(film.getRating())
                         .ratingVoteCount(film.getRatingVoteCount())
-                        .posterUrl(film.getPoster_url())
-                        .posterUrlPreview(film.getPoster_url_preview())
+                        .posterUrl(film.getPosterUrl())
+                        .posterUrlPreview(film.getPosterUrlPreview())
                         .build());
 
                 countryOfFilmList.clear();
