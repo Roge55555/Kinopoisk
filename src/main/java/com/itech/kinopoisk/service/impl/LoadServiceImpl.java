@@ -21,18 +21,16 @@ public class LoadServiceImpl implements LoadService {
     @Value("${service.film.url}")
     private String fullUrl;
 
+    private final RestTemplate restTemplate;
+
     @Override
     public void loadTop250Films() {
-
-        RestTemplate restTemplate = new RestTemplate();
 
         restTemplate.exchange(topUrl, HttpMethod.GET, null, String.class);
     }
 
     @Override
     public FullFilm loadFilmInfo(Long id) {
-
-        RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<FullFilm> response = restTemplate.exchange(fullUrl + id, HttpMethod.GET, null, FullFilm.class);
 
