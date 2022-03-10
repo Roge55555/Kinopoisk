@@ -13,17 +13,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -41,6 +40,9 @@ class FilmServiceImplTest {
     @Mock
     GenreOfFilmServiceImpl genreOfFilmService;
 
+    @Mock
+    RestTemplate restTemplate;
+
     private Film newFilm(Long id, String nameRu, String nameEn) {
 
         return Film.builder()
@@ -51,19 +53,10 @@ class FilmServiceImplTest {
                 .length("2:08")
                 .rating(1.87)
                 .ratingVoteCount(3265L)
-                .poster_url("/poster")
-                .poster_url_preview("/poster/preview")
+                .posterUrl("/poster")
+                .posterUrlPreview("/poster/preview")
+                .isBlocked(false)
                 .build();
-    }
-
-    @Test
-    @DisplayName("Add film")
-    void add() {
-        Film film = new Film();
-
-        filmService.add(film);
-
-        verify(filmRepository, times(1)).save(any(Film.class));
     }
 
     @Test
@@ -111,27 +104,10 @@ class FilmServiceImplTest {
     }
 
     @Test
-    @DisplayName("Updating film by id")
-    void update() {
-        Film oldFilm = newFilm(4L, "Интерстеллар", null);
+    @DisplayName("Successful ban film by id")
+    void banFilm() {
+        filmService.banFilm(6L);
 
-        when(filmRepository.findById(anyLong())).thenReturn(Optional.ofNullable(oldFilm));
-        oldFilm.setNameEn("Interstellar");
-        when(filmRepository.save(any(Film.class))).thenReturn(oldFilm);
-        Film updatedFilm = filmService.update(newFilm(4L, null, "Interstellar"));
-
-
-        verify(filmRepository, times(1)).save(any(Film.class));
-        assertEquals(oldFilm, updatedFilm);
-    }
-
-    @Test
-    @DisplayName("Delete film by id")
-    void delete() {
-
-        when(filmRepository.findById(anyLong())).thenReturn(Optional.ofNullable(newFilm(2L, "xxx", "xxx")));
-        filmService.delete(641564L);
-
-        verify(filmRepository, times(1)).deleteById(anyLong());
+        verify(restTemplate, times(1)).put(anyString(), any(), any(Class.class));
     }
 }
