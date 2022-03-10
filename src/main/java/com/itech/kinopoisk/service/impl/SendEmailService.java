@@ -1,4 +1,4 @@
-package com.itech.kinopoisk.service;
+package com.itech.kinopoisk.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -11,7 +11,7 @@ public class SendEmailService {
 
     private final JavaMailSender javaMailSender;
 
-    public void sendActivationCode(String to, String title, String message) {
+    public void sendInfoAboutRegistration(String to, String title, String message) {
         System.out.println("start");
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom("roge55555@gmail.com");

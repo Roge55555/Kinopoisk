@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,15 +24,11 @@ public class LoadServiceImpl implements LoadService {
 
     @Override
     public void loadTop250Films() {
-
         restTemplate.exchange(topUrl, HttpMethod.GET, null, String.class);
     }
 
     @Override
     public FullFilm loadFilmInfo(Long id) {
-
-        ResponseEntity<FullFilm> response = restTemplate.exchange(fullUrl + id, HttpMethod.GET, null, FullFilm.class);
-
-        return response.getBody();
+        return restTemplate.exchange(fullUrl + id, HttpMethod.GET, null, FullFilm.class).getBody();
     }
 }

@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = TooLowAccessException.class)
-    public ResponseEntity<String> noSuchElement(TooLowAccessException tooLowAccessException) {
+    public ResponseEntity<String> tooLowAccessException(TooLowAccessException tooLowAccessException) {
         return new ResponseEntity<>(tooLowAccessException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

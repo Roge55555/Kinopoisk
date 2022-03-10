@@ -11,8 +11,7 @@ import com.itech.kinopoisk.service.FilmService;
 import com.itech.kinopoisk.service.GenreOfFilmService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,6 +28,11 @@ public class FilmServiceImpl implements FilmService {
     private final CountryOfFilmService countryOfFilmService;
 
     private final GenreOfFilmService genreOfFilmService;
+
+    private final RestTemplate restTemplate;
+
+    @Value("${service.film.ban}")
+    private String banUrl;
 
     @Override
     public List<FilmAddDTO> findAll(FilmFilterRequest filterRequest) {
@@ -89,12 +93,7 @@ public class FilmServiceImpl implements FilmService {
 
     @Override
     public void banFilm(Long id) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-
-        HttpEntity<String> request = new HttpEntity<>(headers);
-        restTemplate.put("http://localhost:8079/JE_war_exploded/films/" + id, request, String.class);
+        restTemplate.put(banUrl + id, null, String.class);
     }
 
 }

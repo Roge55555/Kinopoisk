@@ -7,7 +7,6 @@ import com.itech.kinopoisk.exceptions.TooLowAccessException;
 import com.itech.kinopoisk.model.Role;
 import com.itech.kinopoisk.repository.UserRepository;
 import com.itech.kinopoisk.service.AccessRoleService;
-import com.itech.kinopoisk.service.SendEmailService;
 import com.itech.kinopoisk.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -38,7 +37,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(accessRoleService.findByName(Role.USER));
 
-        sendEmailService.sendActivationCode(user.getEmail(), "Film2Night", "You are registered in kinopoisk group watching film service.");
+        sendEmailService.sendInfoAboutRegistration(user.getEmail(), "Film2Night", "You are registered in kinopoisk group watching film service.");
 
         return userRepository.save(user);
     }
@@ -47,7 +46,12 @@ public class UserServiceImpl implements UserService {
     public void updateRole(Long id, String role) {
         List<Role> list = Arrays.stream(Role.values()).collect(Collectors.toList());
         User user;
-        if(list.contains(Role.valueOf(role.toUpperCase(Locale.ROOT)))) {
+        try {
+            list.contains(Role.valueOf(role.toUpperCase(Locale.ROOT)));
+        } catch (IllegalArgumentException e) {
+            log.error("No element with such role - {}.", role);
+            throw new NoSuchElementException(role);
+        }
             if(findByLogin(Utils.getLogin()).getRole().getId() <= accessRoleService.findByName(Role.valueOf(role.toUpperCase(Locale.ROOT))).getId()) {
                 user = findById(id);
                 user.setRole(accessRoleService.findByName(Role.valueOf(role.toUpperCase(Locale.ROOT))));
@@ -56,11 +60,6 @@ public class UserServiceImpl implements UserService {
                 log.error("You can`t up access higher then your`s.");
                 throw new TooLowAccessException("You can`t up access higher then your`s. Your - " + findByLogin(Utils.getLogin()).getRole().getName() + ", you want set - " + role + ".");
             }
-        }
-        else {
-            log.error("No element with such role - {}.", role);
-            throw new NoSuchElementException(role);
-        }
 
         userRepository.save(user);
     }

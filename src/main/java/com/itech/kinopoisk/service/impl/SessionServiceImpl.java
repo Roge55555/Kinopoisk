@@ -5,6 +5,7 @@ import com.itech.kinopoisk.entity.Session;
 import com.itech.kinopoisk.exceptions.NoSuchElementException;
 import com.itech.kinopoisk.exceptions.TooLowAccessException;
 import com.itech.kinopoisk.exceptions.TryingModifyNotYourDataException;
+import com.itech.kinopoisk.model.Role;
 import com.itech.kinopoisk.repository.SessionRepository;
 import com.itech.kinopoisk.service.FilmService;
 import com.itech.kinopoisk.service.SessionService;
@@ -78,7 +79,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public void deleteSession(Long id) {
-        if(findById(id).getCreator().getLogin().equals(Utils.getLogin()) || userService.findByLogin(Utils.getLogin()).getRole().getId() == 2L) {
+        if(findById(id).getCreator().getLogin().equals(Utils.getLogin()) || userService.findByLogin(Utils.getLogin()).getRole().getName().equals(Role.MODERATOR)) {
             sessionRepository.deleteById(id);
         }
         else {
