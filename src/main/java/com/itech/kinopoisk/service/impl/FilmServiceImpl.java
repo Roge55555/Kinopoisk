@@ -11,11 +11,12 @@ import com.itech.kinopoisk.service.FilmService;
 import com.itech.kinopoisk.service.GenreOfFilmService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -28,10 +29,10 @@ public class FilmServiceImpl implements FilmService {
 
     private final GenreOfFilmService genreOfFilmService;
 
-    @Override
-    public Film add(Film film) {
-        return filmRepository.save(film);
-    }
+    private final RestTemplate restTemplate;
+
+    @Value("${service.film.ban}")
+    private String banUrl;
 
     @Override
     public List<FilmAddDTO> findAll(FilmFilterRequest filterRequest) {
@@ -47,34 +48,38 @@ public class FilmServiceImpl implements FilmService {
 
         for (Film film : filmList) {
 
-            countryOfFilmList = countryOfFilmService.findByFilmId(film.getId());
-            for (CountryOfFilm countryOfFilm : countryOfFilmList) {
-                countryList.add(countryOfFilm.getCountry());
+            if (!film.getIsBlocked()) {
+
+                countryOfFilmList = countryOfFilmService.findByFilmId(film.getId());
+                for (CountryOfFilm countryOfFilm : countryOfFilmList) {
+                    countryList.add(countryOfFilm.getCountry());
+                }
+                genreOfFilmList = genreOfFilmService.findByFilmId(film.getId());
+                for (GenreOfFilm genreOfFilm : genreOfFilmList) {
+                    genreList.add(genreOfFilm.getGenre());
+                }
+
+                filmAddDTOList.add(FilmAddDTO.builder()
+                        .nameRu(film.getNameRu())
+                        .nameEn(film.getNameEn())
+                        .year(film.getYear())
+                        .filmLength(film.getLength())
+                        .countries(countryList)
+                        .genres(genreList)
+                        .rating(film.getRating())
+                        .ratingVoteCount(film.getRatingVoteCount())
+                        .posterUrl(film.getPosterUrl())
+                        .posterUrlPreview(film.getPosterUrlPreview())
+                        .build());
+
+                countryOfFilmList.clear();
+                genreOfFilmList.clear();
+                countryList = new ArrayList<>();
+                genreList = new ArrayList<>();
+
             }
-            genreOfFilmList = genreOfFilmService.findByFilmId(film.getId());
-            for (GenreOfFilm genreOfFilm : genreOfFilmList) {
-                genreList.add(genreOfFilm.getGenre());
-            }
-
-            filmAddDTOList.add(FilmAddDTO.builder()
-                    .nameRu(film.getNameRu())
-                    .nameEn(film.getNameEn())
-                    .year(film.getYear())
-                    .filmLength(film.getLength())
-                    .countries(countryList)
-                    .genres(genreList)
-                    .rating(film.getRating())
-                    .ratingVoteCount(film.getRatingVoteCount())
-                    .posterUrl(film.getPoster_url())
-                    .posterUrlPreview(film.getPoster_url_preview())
-                    .build());
-
-            countryOfFilmList.clear();
-            genreOfFilmList.clear();
-            countryList = new ArrayList<>();
-            genreList = new ArrayList<>();
-
         }
+
         return filmAddDTOList;
     }
 
@@ -87,38 +92,8 @@ public class FilmServiceImpl implements FilmService {
     }
 
     @Override
-    public Film update(Film film) {
-        Film updatedFilm = findById(film.getId());
-        if (Objects.nonNull(film.getNameRu())) {
-            updatedFilm.setNameRu(film.getNameRu());
-        }
-        if (Objects.nonNull(film.getNameEn())) {
-            updatedFilm.setNameEn(film.getNameEn());
-        }
-        if (Objects.nonNull(film.getYear())) {
-            updatedFilm.setYear(film.getYear());
-        }
-        if (Objects.nonNull(film.getLength())) {
-            updatedFilm.setLength(film.getLength());
-        }
-        if (Objects.nonNull(film.getRating())) {
-            updatedFilm.setRating(film.getRating());
-        }
-        if (Objects.nonNull(film.getRatingVoteCount())) {
-            updatedFilm.setRatingVoteCount(film.getRatingVoteCount());
-        }
-        if (Objects.nonNull(film.getPoster_url())) {
-            updatedFilm.setPoster_url(film.getPoster_url());
-        }
-        if (Objects.nonNull(film.getPoster_url_preview())) {
-            updatedFilm.setPoster_url_preview(film.getPoster_url_preview());
-        }
-        return filmRepository.save(updatedFilm);
+    public void banFilm(Long id) {
+        restTemplate.put(banUrl + id, null, String.class);
     }
 
-    @Override
-    public void delete(Long id) {
-        findById(id);
-        filmRepository.deleteById(id);
-    }
 }

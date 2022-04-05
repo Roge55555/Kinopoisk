@@ -103,9 +103,11 @@ class CountryOfFilmServiceImplTest {
 
 
         when(countryOfFilmService.findByFilmId(anyLong())).thenReturn(list);
-        when(countryOfFilmService.findByFilmIdAndCountryName(anyLong(), anyString())).thenReturn(java.util.Optional.ofNullable(countryOfFilmName));
         when(countryService.findByCountryName(anyString())).thenReturn(country);
-        when(countryOfFilmService.findByFilmIdAndCountryId(anyLong(), anyLong())).thenReturn(java.util.Optional.ofNullable(countryOfFilmId));
+        when(countryOfFilmService.findByFilmIdAndCountryId(anyLong(), anyLong())).thenReturn(java.util.Optional.of(countryOfFilmId));
+        when(countryOfFilmService.findByFilmIdAndCountryName(666L, "Мексика")).thenReturn(java.util.Optional.of(countryOfFilmName));
+
+
         countryOfFilmService.update(10L, countryList);
 
         verify(countryOfFilmRepository, times(1)).save(any(CountryOfFilm.class));

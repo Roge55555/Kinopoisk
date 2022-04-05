@@ -8,17 +8,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @NoArgsConstructor
 @Getter
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
-public class NoSuchElementException extends RuntimeException {
+public class TooLowAccessException extends RuntimeException {
 
     private String message;
 
-    private Long id;
-
-    public NoSuchElementException(Long id) {
-        this.id = id;
-    }
-
-    public NoSuchElementException(String message) {
+    public TooLowAccessException(String message) {
         this.message = message;
     }
 

@@ -101,11 +101,12 @@ class GenreOfFilmServiceImplTest {
         list.add(genreOfFilmName);
         list.add(genreOfFilmId);
 
-
         when(genreOfFilmService.findByFilmId(anyLong())).thenReturn(list);
-        when(genreOfFilmService.findByFilmIdAndGenreName(anyLong(), anyString())).thenReturn(java.util.Optional.ofNullable(genreOfFilmName));
         when(genreService.findByGenreName(anyString())).thenReturn(genre);
         when(genreOfFilmService.findByFilmIdAndGenreId(anyLong(), anyLong())).thenReturn(java.util.Optional.ofNullable(genreOfFilmId));
+        when(genreOfFilmService.findByFilmIdAndGenreName(666L, "музыка")).thenReturn(java.util.Optional.ofNullable(genreOfFilmName));
+
+
         genreOfFilmService.update(10L, genreList);
 
         verify(genreOfFilmRepository, times(1)).save(any(GenreOfFilm.class));

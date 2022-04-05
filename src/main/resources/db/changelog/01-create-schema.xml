@@ -7,78 +7,6 @@
 
     <changeSet id="01" author="rogE">
 
-        <createTable tableName="film">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints nullable="false" unique="true" primaryKey="true"/>
-            </column>
-            <column name="name_ru" type="varchar(255)">
-                <constraints nullable="true" unique="true"/>
-            </column>
-            <column name="name_en" type="varchar(255)">
-                <constraints nullable="true" unique="true"/>
-            </column>
-            <column name="year" type="varchar(255)">
-                <constraints nullable="false" unique="false"/>
-            </column>
-            <column name="length" type="varchar(255)">
-                <constraints nullable="true" unique="false"/>
-            </column>
-            <column name="rating" type="double">
-                <constraints nullable="false" unique="false"/>
-            </column>
-            <column name="rating_vote_count" type="bigint">
-                <constraints nullable="false" unique="false"/>
-            </column>
-            <column name="poster_url" type="varchar(255)">
-                <constraints nullable="true" unique="true"/>
-            </column>
-            <column name="poster_url_preview" type="varchar(255)">
-                <constraints nullable="true" unique="true"/>
-            </column>
-        </createTable>
-
-        <createTable tableName="country">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints nullable="false" unique="true" primaryKey="true"/>
-            </column>
-            <column name="name" type="varchar(50)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-        </createTable>
-
-        <createTable tableName="film_country">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints nullable="false" unique="true" primaryKey="true"/>
-            </column>
-            <column name="film_id" type="bigint">
-            <constraints nullable="false" foreignKeyName="fk_film_country_film" references="film(id)"/>
-            </column>
-            <column name="country_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_film_country_country" references="country(id)"/>
-            </column>
-        </createTable>
-
-        <createTable tableName="genre">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints nullable="false" unique="true" primaryKey="true"/>
-            </column>
-            <column name="name" type="varchar(50)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-        </createTable>
-
-        <createTable tableName="film_genre">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints nullable="false" unique="true" primaryKey="true"/>
-            </column>
-            <column name="film_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_film_genre_film" references="film(id)"/>
-            </column>
-            <column name="genre_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_film_genre_genre" references="genre(id)"/>
-            </column>
-        </createTable>
-
         <createTable tableName="access_role">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" unique="true" primaryKey="true"/>
@@ -98,10 +26,92 @@
             <column name="password" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
             <column name="role" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_role_user_ar" references="access_role(id)"/>
             </column>
         </createTable>
+
+        <createTable tableName="session">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="creator_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_session_user_ar" references="user(id)"/>
+            </column>
+            <column name="film_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_film_user_ar" references="film(id)"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="date_start" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="max_user_count" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="user_of_session">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="session_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_session_uos_session_ar" references="session(id)"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_user_uos_user_ar" references="user(id)"/>
+            </column>
+            <column name="date_entered" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="session_message">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="creator_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_user_sm_user_ar" references="user(id)"/>
+            </column>
+            <column name="session_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_session_sm_session_ar" references="session(id)"/>
+            </column>
+            <column name="date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="txt" type="varchar(255)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="session_rating">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true" primaryKey="true"/>
+            </column>
+            <column name="creator_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_user_sr_user_ar" references="user(id)"/>
+            </column>
+            <column name="session_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_session_sr_session_ar" references="session(id)"/>
+            </column>
+            <column name="date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="txt" type="varchar(255)">
+                <constraints nullable="true" unique="false"/>
+            </column>
+        </createTable>
+
     </changeSet>
 
 </databaseChangeLog>
